@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowPixel Studios</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bangers&family=Inter:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-card-hover: #1a1a1a;
+            --white: #f0f0f0;
+            --gray: #888;
+            --accent: #ff3c3c;
+            --accent-glow: rgba(255, 60, 60, 0.3);
+            --cyan: #00e5ff;
+            --cyan-glow: rgba(0, 229, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #222;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.6rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px var(--accent-glow);
+            transition: text-shadow 0.3s;
+        }
+
+        .logo:hover {
+            text-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow);
+        }
+
+        .logo span {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            display: block;
+            line-height: 1;
+            margin-top: -4px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 120px 5%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #1a0a0a 0%, var(--bg-dark) 70%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, var(--accent-glow) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, var(--cyan-glow) 0%, transparent 50%);
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-logo {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 5rem;
+            color: var(--white);
+            text-shadow:
+                0 0 40px var(--accent-glow),
+                0 0 80px var(--accent-glow),
+                3px 3px 0 #000;
+            margin-bottom: 0;
+            line-height: 1.1;
+            letter-spacing: 3px;
+        }
+
+        .hero-logo-sub {
+            font-family: 'Bangers', cursive;
+            font-size: 6rem;
+            color: var(--white);
+            letter-spacing: 15px;
+            text-shadow:
+                0 0 40px var(--cyan-glow),
+                0 0 80px var(--cyan-glow),
+                3px 3px 0 #000;
+            margin-bottom: 30px;
+            line-height: 1;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 45px;
+            background: var(--accent);
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px var(--accent-glow);
+        }
+
+        .cta-button.outline {
+            background: transparent;
+            border: 2px solid var(--cyan);
+            color: var(--cyan);
+            margin-left: 15px;
+        }
+
+        .cta-button.outline:hover {
+            background: var(--cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 10px 40px var(--cyan-glow);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--white);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 0 auto 4rem;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-family: 'Permanent Marker', cursive;
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: #bbb;
+            line-height: 1.8;
+        }
+
+        .values {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .value-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s;
+        }
+
+        .value-item:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(5px);
+        }
+
+        .value-icon {
+            font-size: 1.5rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #222;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .stat-number {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 35px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s;
+            border: 1px solid #222;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px var(--accent-glow);
+        }
+
+        .project-image {
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image .project-emoji {
+            font-size: 6rem;
+            filter: grayscale(0.3);
+            transition: transform 0.4s;
+        }
+
+        .project-card:hover .project-emoji {
+            transform: scale(1.15);
+        }
+
+        .project-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(transparent, var(--bg-card));
+        }
+
+        .project-info {
+            padding: 30px 35px 35px;
+        }
+
+        .project-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 60, 60, 0.15);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .project-info h3 {
+            font-family: 'Bangers', cursive;
+            color: var(--white);
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .project-info p {
+            margin-bottom: 25px;
+            color: var(--gray);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .project-links a {
+            padding: 10px 25px;
+            background: transparent;
+            border: 2px solid #333;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .project-links a:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .project-links a.secondary:hover {
+            border-color: var(--cyan);
+            background: var(--cyan);
+            color: var(--bg-dark);
+        }
+
+        /* News Section */
+        .news-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .news-item {
+            background: var(--bg-card);
+            padding: 30px 35px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            transition: all 0.3s;
+            display: flex;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .news-item:hover {
+            border-color: var(--cyan);
+            transform: translateX(8px);
+            box-shadow: -5px 0 20px var(--cyan-glow);
+        }
+
+        .news-date {
+            background: var(--bg-dark);
+            padding: 15px 18px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 90px;
+            border: 1px solid #333;
+        }
+
+        .news-date .day {
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            color: var(--cyan);
+            display: block;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .news-date .month {
+            color: var(--gray);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .news-content h3 {
+            color: var(--white);
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .news-content p {
+            color: var(--gray);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .news-content a.read-more {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .news-content a.read-more:hover {
+            color: var(--white);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #222;
+            transition: all 0.3s;
+        }
+
+        .team-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--cyan));
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--bg-dark);
+            font-family: 'Bangers', cursive;
+            letter-spacing: 2px;
+        }
+
+        .team-card h4 {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .team-card .role {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            padding: 70px 5% 30px;
+            margin-top: 80px;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 50px;
+        }
+
+        .footer-section h4 {
+            font-family: 'Bangers', cursive;
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+        }
+
+        .footer-section p, .footer-section a {
+            color: var(--gray);
+            text-decoration: none;
+            line-height: 2.2;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            border: 1px solid #333;
+            font-size: 1.1rem;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .newsletter-form input {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: var(--bg-dark);
+            color: var(--white);
+            width: 100%;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .newsletter-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background: #ff5555;
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #222;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu span {
+            width: 28px;
+            height: 3px;
+            background: var(--white);
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero-logo {
+                font-size: 2.8rem;
+            }
+
+            .hero-logo-sub {
+                font-size: 3.5rem;
+                letter-spacing: 8px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-item {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .cta-button.outline {
+                margin-left: 0;
+                margin-top: 12px;
+            }
+        }
+
+        /* Glitch effect for logo on hover */
+        @keyframes glitch {
+            0% { text-shadow: 0 0 40px var(--accent-glow), 3px 3px 0 #000; }
+            25% { text-shadow: -3px 0 var(--cyan), 3px 0 var(--accent), 3px 3px 0 #000; }
+            50% { text-shadow: 3px 0 var(--cyan), -3px 0 var(--accent), 3px 3px 0 #000; }
+            75% { text-shadow: 0 0 40px var(--accent-glow), 3px 3px 0 #000; }
+            100% { text-shadow: 0 0 40px var(--accent-glow), 3px 3px 0 #000; }
+        }
+
+        .hero-logo:hover {
+            animation: glitch 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                ShadowPixel
+                <span>STUDIOS</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-logo">ShadowPixel</div>
+            <div class="hero-logo-sub">STUDIOS</div>
+            <p>We craft bold, immersive gaming experiences that push boundaries and leave lasting impressions.</p>
+            <div>
+                <a href="#projects" class="cta-button">Our Games</a>
+                <a href="#about" class="cta-button outline">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="fade-in">
+        <h2 class="section-title">About Us</h2>
+        <p class="section-subtitle">Raw creativity. Unfiltered passion.</p>
+        <div class="section-divider"></div>
+        <div class="about-grid">
+            <div class="about-text">
+                <h3>Who We Are</h3>
+                <p>ShadowPixel Studios is an independent game development studio built on the belief that games should be bold, memorable, and unapologetically creative.</p>
+                <p>We blend street-art energy with cutting-edge technology to create worlds that players can't forget. Every project is a canvas, and every pixel tells a story.</p>
+                <div class="values">
+                    <div class="value-item">
+                        <span class="value-icon">🔥</span>
+                        <span><strong>Bold Experimentation</strong> — We push boundaries, never play it safe</span>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-icon">🎨</span>
+                        <span><strong>Artistic Freedom</strong> — Every pixel is intentional</span>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-icon">💜</span>
+                        <span><strong>Healthy Culture</strong> — No crunch, just passion</span>
+                    </div>
+                    <div class="value-item">
+                        <span class="value-icon">🎮</span>
+                        <span><strong>Player First</strong> — Experiences that resonate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-stats">
+                <div class="stat-card">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">Active Project</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2024</div>
+                    <div class="stat-label">Founded</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Creative Energy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="fade-in">
+        <h2 class="section-title">Our Projects</h2>
+        <p class="section-subtitle">Games that leave a mark.</p>
+        <div class="section-divider"></div>
+        <div class="projects-grid">
+            <!-- Project: The Endless Rooms -->
+            <div class="project-card">
+                <div class="project-image" style="background: linear-gradient(135deg, #1a0a1a, #2d1a2d, #1a0a2e);">
+                    <span class="project-emoji">🚪</span>
+                </div>
+                <div class="project-info">
+                    <span class="project-tag">Psychological Horror</span>
+                    <h3>THE ENDLESS ROOMS</h3>
+                    <p>A mind-bending first-person horror experience where reality fractures with every door you open. Navigate an ever-shifting labyrinth of impossible architecture, solve surreal puzzles, and uncover the dark truth behind your imprisonment. But beware—some doors should never be opened, and some rooms remember you.</p>
+                    <div class="project-links">
+                        <a href="#">Details</a>
+                        <a href="#" class="secondary">Wishlist</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="fade-in">
+        <h2 class="section-title">Latest News</h2>
+        <p class="section-subtitle">Stay in the loop.</p>
+        <div class="section-divider"></div>
+        <div class="news-container">
+            <div class="news-item">
+                <div class="news-date">
+                    <span class="day">10</span>
+                    <span class="month">Jun 2026</span>
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Announcement</span>
+                    <h3>THE ENDLESS ROOMS - Official Reveal</h3>
+                    <p>We're thrilled to unveil our latest project: THE ENDLESS ROOMS. A psychological horror experience that will challenge your perception of reality. Wishlist now on Steam!</p>
+                    <a href="#" class="read-more">Read more →</a>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">
+                    <span class="day">01</span>
+                    <span class="month">Jun 2026</span>
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Development</span>
+                    <h3>Behind the Scenes: Creating Impossible Spaces</h3>
+                    <p>Our art team shares insights into designing the non-Euclidean architecture and surreal environments that make THE ENDLESS ROOMS so unsettling.</p>
+                    <a href="#" class="read-more">Read more →</a>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <div class="news-date">
+                    <span class="day">15</span>
+                    <span class="month">May 2026</span>
+                </div>
+                <div class="news-content">
+                    <span class="news-category">Studio</span>
+                    <h3>ShadowPixel Studios Expands Team</h3>
+                    <p>We're growing! Join our talented team of developers, artists, and designers as we work on our most ambitious project yet.</p>
+                    <a href="#" class="read-more">Read more →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="fade-in">
+        <h2 class="section-title">The Crew</h2>
+        <p class="section-subtitle">The minds behind the pixels.</p>
+        <div class="section-divider"></div>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">ER</div>
+                <h4>Elena Rostova</h4>
+                <div class="role">Studio Head & Creative Director</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">MV</div>
+                <h4>Marcus "Glitch" Vance</h4>
+                <div class="role">Lead Programmer</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">YT</div>
+                <h4>Yuki Tanaka</h4>
+                <div class="role">Art Director</div>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">AK</div>
+                <h4>Alex Kim</h4>
+                <div class="role">Lead Game Designer</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>ShadowPixel Studios</h4>
+                <p>Crafting bold, immersive gaming experiences. Every pixel has a purpose. Every shadow tells a story.</p>
+                <div class="social-links">
+                    <a href="#" title="Twitter/X">𝕏</a>
+                    <a href="#" title="Discord">💬</a>
+                    <a href="#" title="YouTube">▶</a>
+                    <a href="#" title="Instagram">📷</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Navigate</h4>
+                <p><a href="#about">About Us</a></p>
+                <p><a href="#projects">Our Games</a></p>
+                <p><a href="#news">News</a></p>
+                <p><a href="#team">Team</a></p>
+                <p><a href="#">Careers</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <p><a href="#">Privacy Policy</a></p>
+                <p><a href="#">Terms of Service</a></p>
+                <p><a href="#">Press Kit</a></p>
+                <p><a href="#">Support</a></p>
+            </div>
+            <div class="footer-section">
+                <h4>Stay Connected</h4>
+                <p>Get exclusive updates, behind-the-scenes content, and early access to our games.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+                    <input type="email" placeholder="your@email.com" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 ShadowPixel Studios. All rights reserved. | Made with 🔥 and late-night coding sessions</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                // Close mobile menu if open
+                const navLinks = document.querySelector('.nav-links');
+                if (window.innerWidth <= 768) {
+                    navLinks.style.display = 'none';
+                }
+            });
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.background = 'rgba(10,10,10,0.98)';
+                navLinks.style.padding = '25px';
+                navLinks.style.borderBottom = '2px solid var(--accent)';
+                navLinks.style.gap = '20px';
+            }
+        });
+    </script>
+</body>
+</html>
