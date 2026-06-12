@@ -6,6 +6,66 @@ import { Link } from 'wouter';
 import img1 from '@assets/06ec4f01-0017-4bc0-8377-2d6c7d4c614b_1781245310783.png';
 import img2 from '@assets/1cf441dd-30c5-47a9-a3ba-c808e2a7a2c4_1781245310783.png';
 
+const API_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function NewsletterForm() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const res = await fetch(`${API_BASE}/api/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setStatus('success');
+        setEmail('');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <p className="text-green-400 text-sm font-semibold tracking-wide py-3">
+        ✓ You're in. Watch your inbox for sneak peeks.
+      </p>
+    );
+  }
+
+  return (
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="EMAIL ADDRESS"
+        required
+        data-testid="input-newsletter-email"
+        className="bg-background border border-border rounded-md px-4 py-3 text-sm text-white focus:outline-none focus:border-primary transition-colors"
+      />
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        data-testid="button-newsletter-subscribe"
+        className="bg-primary text-white font-bold tracking-widest text-sm uppercase px-4 py-3 rounded-md transition-all hover:bg-[#ff5555] hover:shadow-[0_5px_20px_rgba(255,60,60,0.3)] disabled:opacity-50"
+      >
+        {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+      </button>
+      {status === 'error' && (
+        <p className="text-primary text-xs">Something went wrong — try again.</p>
+      )}
+    </form>
+  );
+}
+
 const projectImages = [
   { src: img2, caption: 'Captain Hollow Empire — Official Logo' },
   { src: img1, caption: 'Captain Hollow\'s Ottoman Empire — Original 1990 Print Ad' },
@@ -387,21 +447,8 @@ export default function Home() {
 
           <div className="lg:col-span-4">
             <h4 className="font-bangers text-xl text-white tracking-widest mb-6">JOIN THE CULT</h4>
-            <p className="text-muted-foreground text-sm mb-4">Subscribe for beta access codes and studio updates.</p>
-            <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
-              <input 
-                type="email" 
-                placeholder="EMAIL ADDRESS" 
-                className="bg-background border border-border rounded-md px-4 py-3 text-sm text-white focus:outline-none focus:border-primary transition-colors"
-                required
-              />
-              <button 
-                type="submit"
-                className="bg-primary text-white font-bold tracking-widest text-sm uppercase px-4 py-3 rounded-md transition-all hover:bg-[#ff5555] hover:shadow-[0_5px_20px_rgba(255,60,60,0.3)]"
-              >
-                SUBSCRIBE
-              </button>
-            </form>
+            <p className="text-muted-foreground text-sm mb-4">Subscribe for sneak peeks, beta access codes, and studio updates.</p>
+            <NewsletterForm />
           </div>
         </div>
         
