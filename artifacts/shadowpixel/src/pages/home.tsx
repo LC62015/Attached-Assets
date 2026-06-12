@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Twitter, Disc, Youtube, Instagram, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { Menu, X, Youtube, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { SiTiktok } from 'react-icons/si';
 import { Link } from 'wouter';
 import img1 from '@assets/06ec4f01-0017-4bc0-8377-2d6c7d4c614b_1781245310783.png';
 import img2 from '@assets/1cf441dd-30c5-47a9-a3ba-c808e2a7a2c4_1781245310783.png';
@@ -13,8 +14,6 @@ const projectImages = [
 const navLinks = [
   { name: 'About', href: '#about' },
   { name: 'Projects', href: '#projects' },
-  { name: 'News', href: '#news' },
-  { name: 'Team', href: '#team' },
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -353,70 +352,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* News Section */}
-      <section id="news" className="py-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant}>
-          <h2 className="font-bangers text-5xl md:text-6xl text-center text-white tracking-[0.1em] uppercase mb-4">Transmission</h2>
-          <p className="text-center text-muted-foreground mb-8 text-lg">Broadcasts from the underground.</p>
-          <div className="w-20 h-1 bg-primary mx-auto mb-16" />
-        </motion.div>
-
-        <div className="max-w-4xl mx-auto space-y-6">
-          {[
-            { day: "15", month: "Oct", cat: "Development", title: "Alpha Build 0.4 Deployed", desc: "We've completely overhauled the lighting engine for The Endless Rooms. The shadows are literally crawling now." },
-            { day: "28", month: "Sep", cat: "Studio News", title: "ShadowPixel Joins Indie Fest", desc: "Catch us at the underground indie showcase next month. We're bringing an exclusive playable demo." },
-            { day: "10", month: "Sep", cat: "Teaser", title: "First Audio Logs Released", desc: "Put on your headphones. The first environmental audio tracks have been uploaded to our Discord." }
-          ].map((news, i) => (
-            <motion.div 
-              key={i}
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
-              className="flex flex-col sm:flex-row gap-6 p-6 md:p-8 bg-card rounded-xl border border-border transition-all duration-300 hover:border-cyan hover:translate-x-2 hover:shadow-[-5px_0_20px_rgba(0,229,255,0.15)]"
-            >
-              <div className="bg-background p-4 rounded-lg border border-border text-center min-w-[100px] shrink-0">
-                <span className="font-bangers text-4xl text-cyan leading-none block">{news.day}</span>
-                <span className="text-muted-foreground text-xs uppercase tracking-[0.2em] font-bold mt-2 block">{news.month}</span>
-              </div>
-              <div>
-                <span className="text-primary text-xs font-bold uppercase tracking-[0.15em] mb-2 block">{news.cat}</span>
-                <h3 className="text-xl font-bold text-white mb-2">{news.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{news.desc}</p>
-                <a href="#" className="text-cyan text-sm font-semibold hover:text-white transition-colors">READ MORE &rarr;</a>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section id="team" className="py-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant}>
-          <h2 className="font-bangers text-5xl md:text-6xl text-center text-white tracking-[0.1em] uppercase mb-4">The Syndicate</h2>
-          <p className="text-center text-muted-foreground mb-8 text-lg">The minds behind the madness.</p>
-          <div className="w-20 h-1 bg-primary mx-auto mb-16" />
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { initials: "ER", name: "Elena Rostova", role: "Studio Head / Creative" },
-            { initials: "MV", name: "Marcus 'Glitch' Vance", role: "Lead Programmer" },
-            { initials: "YT", name: "Yuki Tanaka", role: "Art Director" },
-            { initials: "AK", name: "Alex Kim", role: "Lead Game Designer" }
-          ].map((member, i) => (
-            <motion.div 
-              key={i}
-              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
-              className="bg-card p-8 rounded-xl border border-border text-center transition-all duration-300 hover:border-primary hover:-translate-y-2"
-            >
-              <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary to-cyan flex items-center justify-center font-bangers text-3xl text-background mb-6 shadow-lg">
-                {member.initials}
-              </div>
-              <h4 className="text-lg font-bold text-white mb-1">{member.name}</h4>
-              <p className="text-primary text-xs font-bold uppercase tracking-wider">{member.role}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
       {/* Footer */}
       <footer id="contact" className="bg-card pt-20 pb-10 px-6 md:px-12 border-t border-border mt-20 relative z-10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
@@ -426,10 +361,8 @@ export default function Home() {
               Independent game development from the underground. We make the games your mother warned you about.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1"><Twitter size={18} /></a>
-              <a href="#" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1"><Disc size={18} /></a>
-              <a href="#" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1"><Youtube size={18} /></a>
-              <a href="#" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1"><Instagram size={18} /></a>
+              <a href="https://www.youtube.com/@ShadowPixelStudiosOwner" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1" data-testid="link-youtube"><Youtube size={18} /></a>
+              <a href="https://tiktok.com/@shadowpixelstudios" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1" data-testid="link-tiktok"><SiTiktok size={16} /></a>
             </div>
           </div>
           
@@ -438,8 +371,7 @@ export default function Home() {
             <ul className="space-y-3">
               <li><a href="#about" onClick={(e) => handleScroll(e, '#about')} className="text-muted-foreground hover:text-primary text-sm transition-colors">About Us</a></li>
               <li><a href="#projects" onClick={(e) => handleScroll(e, '#projects')} className="text-muted-foreground hover:text-primary text-sm transition-colors">Games</a></li>
-              <li><a href="#news" onClick={(e) => handleScroll(e, '#news')} className="text-muted-foreground hover:text-primary text-sm transition-colors">News</a></li>
-              <li><a href="#team" onClick={(e) => handleScroll(e, '#team')} className="text-muted-foreground hover:text-primary text-sm transition-colors">Team</a></li>
+              <li><a href="#contact" onClick={(e) => handleScroll(e, '#contact')} className="text-muted-foreground hover:text-primary text-sm transition-colors">Contact</a></li>
             </ul>
           </div>
 
