@@ -112,24 +112,42 @@ export default function Admin() {
           <motion.div
             animate={pinErr ? { x: [-8, 8, -8, 8, 0] } : {}}
             transition={{ duration: 0.3 }}
+            className={`bg-card border rounded-2xl p-8 ${pinErr ? 'border-white/40' : 'border-border'}`}
           >
-            <form onSubmit={e => { e.preventDefault(); tryUnlock(); }} className="flex flex-col gap-3">
-              <input
-                type="password"
-                value={pin}
-                onChange={e => setPin(e.target.value)}
-                placeholder="Enter password"
-                autoFocus
-                className="w-full bg-card border border-border rounded-xl px-5 py-4 text-white text-center text-lg tracking-[0.3em] focus:outline-none focus:border-white/40 transition-colors placeholder:tracking-normal placeholder:text-muted-foreground"
-              />
-              {pinErr && (
-                <p className="text-center text-white/50 text-xs tracking-widest uppercase">Wrong password — try again</p>
-              )}
-              <button type="submit"
-                className="w-full py-4 bg-white text-background font-bold uppercase tracking-widest text-sm rounded-xl hover:bg-white/90 transition-all">
-                Enter
+            <div className="flex gap-3 justify-center mb-8">
+              {[0, 1, 2, 3].map(i => (
+                <div key={i} className={`w-4 h-4 rounded-full border-2 transition-all ${pin.length > i ? 'bg-white border-white' : 'bg-transparent border-white/30'}`} />
+              ))}
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {[1,2,3,4,5,6,7,8,9].map(n => (
+                <button key={n} type="button"
+                  onClick={() => pin.length < 4 && setPin(p => p + n)}
+                  className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
+                  {n}
+                </button>
+              ))}
+              <button type="button"
+                onClick={() => setPin('')}
+                className="h-14 rounded-xl bg-background border border-border text-muted-foreground text-sm font-bold hover:bg-white/10 transition-all active:scale-95">
+                CLR
               </button>
-            </form>
+              <button type="button"
+                onClick={() => pin.length < 4 && setPin(p => p + '0')}
+                className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
+                0
+              </button>
+              <button type="button"
+                onClick={tryUnlock}
+                className="h-14 rounded-xl bg-white text-background font-bold hover:bg-white/90 transition-all active:scale-95 flex items-center justify-center">
+                <ChevronRight size={22} />
+              </button>
+            </div>
+
+            {pinErr && (
+              <p className="text-center text-white/60 text-xs tracking-widest uppercase">Wrong passcode</p>
+            )}
           </motion.div>
         </motion.div>
       </div>
