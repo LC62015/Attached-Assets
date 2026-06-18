@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Youtube, ChevronLeft, ChevronRight, ZoomIn, Lock } from 'lucide-react';
-import { SiTiktok } from 'react-icons/si';
+import { SiTiktok, SiDiscord } from 'react-icons/si';
 import { Link } from 'wouter';
 import img1 from '@assets/06ec4f01-0017-4bc0-8377-2d6c7d4c614b_1781245310783.png';
 import img2 from '@assets/1cf441dd-30c5-47a9-a3ba-c808e2a7a2c4_1781245310783.png';
@@ -591,6 +591,7 @@ export default function Home() {
             <div className="flex gap-3">
               <a href="https://www.youtube.com/@ShadowPixelStudiosOwner" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1" data-testid="link-youtube"><Youtube size={18} /></a>
               <a href="https://tiktok.com/@shadowpixelstudios" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1" data-testid="link-tiktok"><SiTiktok size={16} /></a>
+              <a href="https://discord.gg/MpFyUyhYVx" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md bg-background border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:border-primary hover:text-white transition-all hover:-translate-y-1" data-testid="link-discord"><SiDiscord size={16} /></a>
             </div>
           </div>
           
