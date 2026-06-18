@@ -55,7 +55,7 @@ function NewsletterForm() {
         type="submit"
         disabled={status === 'loading'}
         data-testid="button-newsletter-subscribe"
-        className="bg-primary text-white font-bold tracking-widest text-sm uppercase px-4 py-3 rounded-md transition-all hover:bg-[#ff5555] hover:shadow-[0_5px_20px_rgba(255,60,60,0.3)] disabled:opacity-50"
+        className="bg-primary text-white font-bold tracking-widest text-sm uppercase px-4 py-3 rounded-md border border-white/20 transition-all hover:bg-zinc-900 disabled:opacity-50"
       >
         {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
       </button>
@@ -290,15 +290,15 @@ export default function Home() {
         >
           <motion.h1 
             variants={fadeUpVariant}
-            className="font-marker text-6xl md:text-[5rem] lg:text-[7rem] text-white leading-[1.1] tracking-wider mb-0 drop-shadow-[0_0_40px_rgba(255,60,60,0.3)] hover-glitch cursor-default"
-            style={{ textShadow: '0 0 40px rgba(255,60,60,0.3), 0 0 80px rgba(255,60,60,0.3), 3px 3px 0 #000' }}
+            className="font-marker text-6xl md:text-[5rem] lg:text-[7rem] text-white leading-[1.1] tracking-wider mb-0 hover-glitch cursor-default"
+            style={{ textShadow: '3px 3px 0 #000' }}
           >
             ShadowPixel
           </motion.h1>
           <motion.h2 
             variants={fadeUpVariant}
             className="font-bangers text-7xl md:text-[7rem] lg:text-[9rem] text-white tracking-[0.2em] md:tracking-[0.3em] leading-none mb-8"
-            style={{ textShadow: '0 0 40px rgba(0,229,255,0.3), 0 0 80px rgba(0,229,255,0.3), 3px 3px 0 #000' }}
+            style={{ textShadow: '3px 3px 0 #000' }}
           >
             STUDIOS
           </motion.h2>
@@ -309,11 +309,11 @@ export default function Home() {
             Indie game development studio defined by raw street-art energy and cutting-edge technology. We build bold, loud, and unapologetically creative experiences.
           </motion.p>
           <motion.div variants={fadeUpVariant} className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a href="#projects" onClick={(e) => handleScroll(e, '#projects')} className="group relative inline-block px-10 py-4 bg-primary text-white font-bold uppercase tracking-widest overflow-hidden transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(255,60,60,0.3)]">
+            <a href="#projects" onClick={(e) => handleScroll(e, '#projects')} className="group relative inline-block px-10 py-4 bg-primary text-white font-bold uppercase tracking-widest overflow-hidden border border-white/20 transition-transform duration-300 hover:-translate-y-1">
               <span className="relative z-10">Our Games</span>
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_0.8s_forwards]" />
             </a>
-            <a href="#about" onClick={(e) => handleScroll(e, '#about')} className="inline-block px-10 py-4 bg-transparent border-2 border-cyan text-cyan font-bold uppercase tracking-widest transition-all duration-300 hover:bg-cyan hover:text-background hover:shadow-[0_10px_40px_rgba(0,229,255,0.3)]">
+            <a href="#about" onClick={(e) => handleScroll(e, '#about')} className="inline-block px-10 py-4 bg-transparent border-2 border-white text-white font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white hover:text-background">
               Studio Manifest
             </a>
           </motion.div>
@@ -374,7 +374,7 @@ export default function Home() {
         </motion.div>
 
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="max-w-4xl mx-auto">
-          <div className="bg-card rounded-2xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-primary hover:shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_30px_rgba(255,60,60,0.2)] group">
+          <div className="bg-card rounded-2xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-white/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)] group">
             <div
               className="h-[350px] relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#2a0845] to-[#0a0a0a] cursor-pointer"
               onClick={() => openLightbox(0)}
@@ -403,7 +403,7 @@ export default function Home() {
                 >
                   View Details
                 </button>
-                <button className="px-8 py-3 bg-transparent border-2 border-border text-white rounded-md font-semibold uppercase tracking-wider text-sm transition-all hover:bg-cyan hover:border-cyan hover:text-background">
+                <button className="px-8 py-3 bg-transparent border-2 border-border text-white rounded-md font-semibold uppercase tracking-wider text-sm transition-all hover:bg-white hover:border-white hover:text-background">
                   Wishlist Now
                 </button>
               </div>

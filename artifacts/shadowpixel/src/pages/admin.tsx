@@ -151,7 +151,7 @@ export default function Admin() {
               type="submit"
               disabled={loading}
               data-testid="button-post-sneak-peek"
-              className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-bold uppercase tracking-widest text-sm rounded-lg transition-all hover:bg-[#ff5555] hover:shadow-[0_5px_20px_rgba(255,60,60,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-8 py-3 bg-primary text-white font-bold uppercase tracking-widest text-sm rounded-lg border border-white/20 transition-all hover:bg-zinc-900 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send size={16} />
               {loading ? 'Sending...' : 'Post & Email Subscribers'}
@@ -162,7 +162,7 @@ export default function Admin() {
         {/* Past Sneak Peeks */}
         <div>
           <h3 className="font-bangers text-2xl tracking-widest text-white mb-6 flex items-center gap-2">
-            <PlusCircle size={20} className="text-cyan" /> Past Sneak Peeks
+            <PlusCircle size={20} className="text-white" /> Past Sneak Peeks
           </h3>
           {peeks.length === 0 ? (
             <p className="text-muted-foreground text-sm">No sneak peeks posted yet.</p>
