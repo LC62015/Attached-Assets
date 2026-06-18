@@ -5,6 +5,7 @@ import { SiTiktok } from 'react-icons/si';
 import { Link } from 'wouter';
 import img1 from '@assets/06ec4f01-0017-4bc0-8377-2d6c7d4c614b_1781245310783.png';
 import img2 from '@assets/1cf441dd-30c5-47a9-a3ba-c808e2a7a2c4_1781245310783.png';
+import endlessRoomLogo from '@assets/image_1781819868680.png';
 
 const API_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -81,6 +82,28 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [wishlistEmail, setWishlistEmail] = useState('');
+  const [wishlistStatus, setWishlistStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const submitWishlist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setWishlistStatus('loading');
+    try {
+      const res = await fetch(`${API_BASE}/api/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: wishlistEmail }),
+      });
+      if (res.ok) {
+        setWishlistStatus('success');
+      } else {
+        setWishlistStatus('error');
+      }
+    } catch {
+      setWishlistStatus('error');
+    }
+  };
 
   const openLightbox = (index = 0) => {
     setLightboxIndex(index);
@@ -125,6 +148,70 @@ export default function Home() {
 
   return (
     <div className="dark min-h-screen bg-background text-foreground selection:bg-primary selection:text-white">
+
+      {/* Wishlist Modal */}
+      <AnimatePresence>
+        {wishlistOpen && (
+          <motion.div
+            key="wishlist"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4"
+            onClick={() => { setWishlistOpen(false); setWishlistStatus('idle'); setWishlistEmail(''); }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              className="bg-card border border-border rounded-2xl p-8 max-w-md w-full relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => { setWishlistOpen(false); setWishlistStatus('idle'); setWishlistEmail(''); }}
+                className="absolute top-4 right-4 text-muted-foreground hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+
+              <img src={endlessRoomLogo} alt="The Endless Room" className="h-20 w-auto object-contain mx-auto mb-6" style={{ filter: 'invert(1)' }} />
+
+              {wishlistStatus === 'success' ? (
+                <div className="text-center">
+                  <p className="font-bangers text-3xl text-white tracking-widest mb-2">YOU'RE IN.</p>
+                  <p className="text-muted-foreground text-sm">We'll notify you the moment The Endless Room drops. Don't open any suspicious doors in the meantime.</p>
+                </div>
+              ) : (
+                <>
+                  <h3 className="font-bangers text-2xl text-white tracking-widest text-center mb-1">JOIN THE WISHLIST</h3>
+                  <p className="text-muted-foreground text-sm text-center mb-6">Get notified on launch day. No spam. Just dread.</p>
+                  <form onSubmit={submitWishlist} className="flex flex-col gap-3">
+                    <input
+                      type="email"
+                      placeholder="your@email.com"
+                      value={wishlistEmail}
+                      onChange={(e) => setWishlistEmail(e.target.value)}
+                      required
+                      className="bg-background border border-border rounded-md px-4 py-3 text-sm text-white focus:outline-none focus:border-white/50 transition-colors"
+                    />
+                    {wishlistStatus === 'error' && (
+                      <p className="text-red-400 text-xs">Something went wrong — try again.</p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={wishlistStatus === 'loading'}
+                      className="bg-white text-background font-bold tracking-widest text-sm uppercase px-4 py-3 rounded-md transition-all hover:bg-white/90 disabled:opacity-50"
+                    >
+                      {wishlistStatus === 'loading' ? 'Adding...' : 'Notify Me'}
+                    </button>
+                  </form>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Lightbox Modal */}
       <AnimatePresence>
@@ -376,11 +463,16 @@ export default function Home() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="max-w-4xl mx-auto">
           <div className="bg-card rounded-2xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-white/30 hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)] group">
             <div
-              className="h-[350px] relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#2a0845] to-[#0a0a0a] cursor-pointer"
+              className="h-[350px] relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-900 to-black cursor-pointer"
               onClick={() => openLightbox(0)}
               data-testid="project-image-area"
             >
-              <span className="text-8xl grayscale opacity-80 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-500 relative z-10">🚪</span>
+              <img
+                src={endlessRoomLogo}
+                alt="The Endless Room"
+                className="relative z-10 h-56 w-auto object-contain group-hover:scale-105 transition-all duration-500"
+                style={{ filter: 'invert(1)' }}
+              />
               <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22 opacity=%220.1%22/%3E%3C/svg%3E')] pointer-events-none mix-blend-overlay" />
               <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-card to-transparent" />
               {/* View images hint */}
@@ -403,7 +495,10 @@ export default function Home() {
                 >
                   View Details
                 </button>
-                <button className="px-8 py-3 bg-transparent border-2 border-border text-white rounded-md font-semibold uppercase tracking-wider text-sm transition-all hover:bg-white hover:border-white hover:text-background">
+                <button
+                  onClick={() => setWishlistOpen(true)}
+                  className="px-8 py-3 bg-transparent border-2 border-border text-white rounded-md font-semibold uppercase tracking-wider text-sm transition-all hover:bg-white hover:border-white hover:text-background"
+                >
                   Wishlist Now
                 </button>
               </div>
