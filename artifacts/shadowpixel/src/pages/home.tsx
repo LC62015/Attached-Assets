@@ -95,7 +95,7 @@ export default function Home() {
   const [garageErr, setGarageErr] = useState(false);
 
   const tryGarage = () => {
-    if (garagePin === '3456') {
+    if (garagePin === '129463') {
       try { localStorage.setItem('garage_v1', '1'); } catch {}
       window.location.href = '/admin';
     } else {
@@ -447,12 +447,16 @@ export default function Home() {
             </p>
             <div className="space-y-4 mt-8">
               {[
-                { icon: "💀", text: "Visceral Storytelling" },
+                { icon: "💀", text: "Visceral Storytelling", secret: true },
                 { icon: "⚡", text: "Electric Atmosphere" },
                 { icon: "🎮", text: "Unforgiving Gameplay" },
                 { icon: "🎨", text: "Raw Street-Art Aesthetic" }
               ].map((val, i) => (
-                <div key={i} className="flex items-center gap-4 p-5 bg-card border-l-4 border-primary rounded-r-lg transition-transform duration-300 hover:translate-x-2 hover:bg-card/80">
+                <div key={i}
+                  className="flex items-center gap-4 p-5 bg-card border-l-4 border-primary rounded-r-lg transition-transform duration-300 hover:translate-x-2 hover:bg-card/80"
+                  onClick={val.secret ? () => { setGarageOpen(true); setGaragePin(''); setGarageErr(false); } : undefined}
+                  style={val.secret ? { cursor: 'pointer' } : undefined}
+                >
                   <span className="text-2xl">{val.icon}</span>
                   <span className="font-bold tracking-wide">{val.text}</span>
                 </div>
@@ -616,9 +620,8 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border">
+        <div className="text-center pt-8 border-t border-border">
           <p className="text-muted-foreground text-xs">&copy; {new Date().getFullYear()} ShadowPixel Studios. All rights reserved.</p>
-          <button onClick={() => { setGarageOpen(true); setGaragePin(''); setGarageErr(false); }} className="text-muted-foreground/30 hover:text-muted-foreground text-xs uppercase tracking-[0.3em] transition-colors duration-300 font-mono">THE GARAGE</button>
         </div>
       </footer>
 
@@ -653,15 +656,15 @@ export default function Home() {
                 className={`bg-card border rounded-2xl p-7 ${garageErr ? 'border-white/40' : 'border-border'}`}
               >
                 <div className="flex gap-3 justify-center mb-7">
-                  {[0,1,2,3].map(i => (
-                    <div key={i} className={`w-4 h-4 rounded-full border-2 transition-all ${garagePin.length > i ? 'bg-white border-white' : 'bg-transparent border-white/30'}`} />
+                  {[0,1,2,3,4,5].map(i => (
+                    <div key={i} className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${garagePin.length > i ? 'bg-white border-white' : 'bg-transparent border-white/30'}`} />
                   ))}
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 mb-3">
                   {[1,2,3,4,5,6,7,8,9].map(n => (
                     <button key={n} type="button"
-                      onClick={() => garagePin.length < 4 && setGaragePin(p => p + n)}
+                      onClick={() => garagePin.length < 6 && setGaragePin(p => p + n)}
                       className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
                       {n}
                     </button>
@@ -670,7 +673,7 @@ export default function Home() {
                     className="h-14 rounded-xl bg-background border border-border text-muted-foreground text-sm font-bold hover:bg-white/10 transition-all active:scale-95">
                     CLR
                   </button>
-                  <button type="button" onClick={() => garagePin.length < 4 && setGaragePin(p => p + '0')}
+                  <button type="button" onClick={() => garagePin.length < 6 && setGaragePin(p => p + '0')}
                     className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
                     0
                   </button>

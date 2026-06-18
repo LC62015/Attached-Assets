@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-const PASS = '3456';
+const PASS = '129463';
 
 interface SneakPeek { id: number; title: string; description: string; imageUrl: string | null; createdAt: string; }
 interface NewsItem { id: number; title: string; content: string; createdAt: string; }
@@ -115,15 +115,15 @@ export default function Admin() {
             className={`bg-card border rounded-2xl p-8 ${pinErr ? 'border-white/40' : 'border-border'}`}
           >
             <div className="flex gap-3 justify-center mb-8">
-              {[0, 1, 2, 3].map(i => (
-                <div key={i} className={`w-4 h-4 rounded-full border-2 transition-all ${pin.length > i ? 'bg-white border-white' : 'bg-transparent border-white/30'}`} />
+              {[0,1,2,3,4,5].map(i => (
+                <div key={i} className={`w-3.5 h-3.5 rounded-full border-2 transition-all ${pin.length > i ? 'bg-white border-white' : 'bg-transparent border-white/30'}`} />
               ))}
             </div>
 
             <div className="grid grid-cols-3 gap-3 mb-4">
               {[1,2,3,4,5,6,7,8,9].map(n => (
                 <button key={n} type="button"
-                  onClick={() => pin.length < 4 && setPin(p => p + n)}
+                  onClick={() => pin.length < 6 && setPin(p => p + n)}
                   className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
                   {n}
                 </button>
@@ -134,7 +134,7 @@ export default function Admin() {
                 CLR
               </button>
               <button type="button"
-                onClick={() => pin.length < 4 && setPin(p => p + '0')}
+                onClick={() => pin.length < 6 && setPin(p => p + '0')}
                 className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
                 0
               </button>
