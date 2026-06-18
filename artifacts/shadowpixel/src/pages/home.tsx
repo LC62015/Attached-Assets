@@ -67,6 +67,9 @@ function NewsletterForm() {
   );
 }
 
+interface NewsItem { id: number; title: string; content: string; createdAt: string; }
+interface DbProject { id: number; name: string; description: string; genre: string | null; status: string | null; imageUrl: string | null; }
+
 const projectImages = [
   { src: img2, caption: 'Captain Hollow Empire — Official Logo' },
   { src: img1, caption: 'Captain Hollow\'s Ottoman Empire — Original 1990 Print Ad' },
@@ -85,6 +88,13 @@ export default function Home() {
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [wishlistEmail, setWishlistEmail] = useState('');
   const [wishlistStatus, setWishlistStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [dbProjects, setDbProjects] = useState<DbProject[]>([]);
+
+  useEffect(() => {
+    fetch(`${API_BASE}/api/news`).then(r => r.json()).then(setNewsItems).catch(() => {});
+    fetch(`${API_BASE}/api/projects`).then(r => r.json()).then(setDbProjects).catch(() => {});
+  }, []);
 
   const submitWishlist = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -505,7 +515,52 @@ export default function Home() {
             </div>
           </div>
         </motion.div>
+
+        {/* DB-added projects */}
+        {dbProjects.length > 0 && (
+          <div className="mt-12 grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {dbProjects.map(proj => (
+              <motion.div key={proj.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
+                className="bg-card rounded-2xl overflow-hidden border border-border transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                {proj.imageUrl && (
+                  <div className="h-40 overflow-hidden bg-zinc-900 flex items-center justify-center">
+                    <img src={proj.imageUrl} alt={proj.name} className="w-full h-full object-cover" />
+                  </div>
+                )}
+                <div className="p-6">
+                  <div className="flex gap-2 flex-wrap mb-3">
+                    {proj.genre && <span className="text-xs bg-white/5 border border-white/10 text-white/60 px-2 py-0.5 rounded-full uppercase tracking-wide">{proj.genre}</span>}
+                    {proj.status && <span className="text-xs bg-white/5 border border-white/10 text-white/60 px-2 py-0.5 rounded-full uppercase tracking-wide">{proj.status}</span>}
+                  </div>
+                  <h3 className="font-bangers text-2xl text-white tracking-[0.05em] mb-2">{proj.name}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{proj.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </section>
+
+      {/* News Section */}
+      {newsItems.length > 0 && (
+        <section id="news" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUpVariant} className="mb-16">
+            <h2 className="font-bangers text-5xl md:text-6xl text-center text-white tracking-[0.1em] uppercase mb-4">From The Studio</h2>
+            <p className="text-center text-muted-foreground mb-8 text-lg">Latest updates from the underground.</p>
+            <div className="w-20 h-1 bg-white/20 mx-auto" />
+          </motion.div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {newsItems.map(item => (
+              <motion.div key={item.id} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
+                className="bg-card border border-border rounded-2xl p-7 hover:border-white/20 hover:-translate-y-1 transition-all duration-300">
+                <span className="text-muted-foreground text-xs uppercase tracking-widest mb-3 block">{new Date(item.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                <h3 className="font-bangers text-2xl text-white tracking-wider mb-3">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.content}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer id="contact" className="bg-card pt-20 pb-10 px-6 md:px-12 border-t border-border mt-20 relative z-10">
@@ -547,8 +602,9 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="text-center pt-8 border-t border-border">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border">
           <p className="text-muted-foreground text-xs">&copy; {new Date().getFullYear()} ShadowPixel Studios. All rights reserved.</p>
+          <a href="/admin" className="text-muted-foreground/30 hover:text-muted-foreground text-xs uppercase tracking-[0.3em] transition-colors duration-300 font-mono">THE GARAGE</a>
         </div>
       </footer>
     </div>
