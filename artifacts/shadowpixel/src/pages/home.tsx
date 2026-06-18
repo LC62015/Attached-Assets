@@ -352,8 +352,8 @@ export default function Home() {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } } }} className="grid grid-cols-2 gap-6">
             {[
               { num: "1", label: "Active Project" },
-              { num: "25+", label: "Team Members" },
-              { num: "2024", label: "Founded" },
+              { num: "5", label: "Team Members" },
+              { num: "2026", label: "Founded" },
               { num: "∞", label: "Creative Energy" }
             ].map((stat, i) => (
               <div key={i} className="bg-card p-8 rounded-xl border border-border text-center transition-all duration-300 hover:border-primary hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
