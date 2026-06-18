@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Youtube, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { Menu, X, Youtube, ChevronLeft, ChevronRight, ZoomIn, Lock } from 'lucide-react';
 import { SiTiktok } from 'react-icons/si';
 import { Link } from 'wouter';
 import img1 from '@assets/06ec4f01-0017-4bc0-8377-2d6c7d4c614b_1781245310783.png';
@@ -90,6 +90,20 @@ export default function Home() {
   const [wishlistStatus, setWishlistStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [dbProjects, setDbProjects] = useState<DbProject[]>([]);
+  const [garageOpen, setGarageOpen] = useState(false);
+  const [garagePin, setGaragePin] = useState('');
+  const [garageErr, setGarageErr] = useState(false);
+
+  const tryGarage = () => {
+    if (garagePin === '3456') {
+      try { localStorage.setItem('garage_v1', '1'); } catch {}
+      window.location.href = '/admin';
+    } else {
+      setGarageErr(true);
+      setGaragePin('');
+      setTimeout(() => setGarageErr(false), 1500);
+    }
+  };
 
   useEffect(() => {
     fetch(`${API_BASE}/api/news`).then(r => r.json()).then(setNewsItems).catch(() => {});
@@ -604,9 +618,81 @@ export default function Home() {
         
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border">
           <p className="text-muted-foreground text-xs">&copy; {new Date().getFullYear()} ShadowPixel Studios. All rights reserved.</p>
-          <a href="/admin" className="text-muted-foreground/30 hover:text-muted-foreground text-xs uppercase tracking-[0.3em] transition-colors duration-300 font-mono">THE GARAGE</a>
+          <button onClick={() => { setGarageOpen(true); setGaragePin(''); setGarageErr(false); }} className="text-muted-foreground/30 hover:text-muted-foreground text-xs uppercase tracking-[0.3em] transition-colors duration-300 font-mono">THE GARAGE</button>
         </div>
       </footer>
+
+      {/* Garage PIN modal */}
+      <AnimatePresence>
+        {garageOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4"
+            onClick={e => { if (e.target === e.currentTarget) { setGarageOpen(false); setGaragePin(''); } }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+              className="w-full max-w-sm"
+            >
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-card border border-border mb-4">
+                  <Lock size={26} className="text-white" />
+                </div>
+                <h2 className="font-bangers text-4xl text-white tracking-[0.2em] mb-1">THE GARAGE</h2>
+                <p className="text-muted-foreground text-xs tracking-widest uppercase">Enter passcode to continue</p>
+              </div>
+
+              <motion.div
+                animate={garageErr ? { x: [-8, 8, -8, 8, 0] } : {}}
+                transition={{ duration: 0.3 }}
+                className={`bg-card border rounded-2xl p-7 ${garageErr ? 'border-white/40' : 'border-border'}`}
+              >
+                <div className="flex gap-3 justify-center mb-7">
+                  {[0,1,2,3].map(i => (
+                    <div key={i} className={`w-4 h-4 rounded-full border-2 transition-all ${garagePin.length > i ? 'bg-white border-white' : 'bg-transparent border-white/30'}`} />
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 mb-3">
+                  {[1,2,3,4,5,6,7,8,9].map(n => (
+                    <button key={n} type="button"
+                      onClick={() => garagePin.length < 4 && setGaragePin(p => p + n)}
+                      className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
+                      {n}
+                    </button>
+                  ))}
+                  <button type="button" onClick={() => setGaragePin('')}
+                    className="h-14 rounded-xl bg-background border border-border text-muted-foreground text-sm font-bold hover:bg-white/10 transition-all active:scale-95">
+                    CLR
+                  </button>
+                  <button type="button" onClick={() => garagePin.length < 4 && setGaragePin(p => p + '0')}
+                    className="h-14 rounded-xl bg-background border border-border text-white text-xl font-bold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95">
+                    0
+                  </button>
+                  <button type="button" onClick={tryGarage}
+                    className="h-14 rounded-xl bg-white text-background font-bold hover:bg-white/90 transition-all active:scale-95 flex items-center justify-center">
+                    <ChevronRight size={22} />
+                  </button>
+                </div>
+
+                {garageErr && (
+                  <p className="text-center text-white/50 text-xs tracking-widest uppercase mt-2">Wrong passcode</p>
+                )}
+              </motion.div>
+
+              <button onClick={() => { setGarageOpen(false); setGaragePin(''); }}
+                className="mt-5 w-full text-muted-foreground/40 hover:text-muted-foreground text-xs uppercase tracking-widest transition-colors">
+                Cancel
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
